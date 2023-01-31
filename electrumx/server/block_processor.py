@@ -116,7 +116,7 @@ class OnDiskBlock:
 
     def __enter__(self):
         self.block_file = open_file(self.filename(self.hex_hash, self.height))
-        self.header = self._read(self.coin.static_header_len(self.height))
+        self.header = self._read(self.coin.BASIC_HEADER_SIZE)
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):

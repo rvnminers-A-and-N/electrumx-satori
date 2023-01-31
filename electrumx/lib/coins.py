@@ -195,7 +195,7 @@ class Coin:
     @classmethod
     def block_header(cls, block, height):
         '''Returns the block header given a block and its height.'''
-        return block[:cls.static_header_len(height)]
+        return block[:cls.BASIC_HEADER_SIZE]
 
     @classmethod
     def block(cls, raw_block, height):
@@ -214,9 +214,9 @@ class Coin:
         return Decimal(value) / cls.VALUE_PER_COIN
 
 
-class Ravencoin(Coin):
-    NAME = "Ravencoin"
-    SHORTNAME = "RVN"
+class Evrmore(Coin):
+    NAME = "Evrmore"
+    SHORTNAME = "EVR"
     NET = "mainnet"
     XPUB_VERBYTES = bytes.fromhex("0488B21E")
     XPRV_VERBYTES = bytes.fromhex("0488ADE4")
@@ -225,36 +225,17 @@ class Ravencoin(Coin):
     GENESIS_HASH = ('0000006b444bc2f2ffe627be9d9e7e7a'
                     '0730000870ef6eb6da46c8eae389df90')
     DEFAULT_MAX_SEND = 10_000_000
-    X16RV2_ACTIVATION_TIME = 1569945600   # algo switch to x16rv2 at this timestamp
-    KAWPOW_ACTIVATION_TIME = 1588788000  # kawpow algo activation time
-    KAWPOW_ACTIVATION_HEIGHT = 1219736
-    KAWPOW_HEADER_SIZE = 120
     
-    CHAIN_SIZE = 20_156_386_851
-    CHAIN_SIZE_HEIGHT = 2_096_467
-    AVG_BLOCK_SIZE = 12_681
-    
-    RPC_PORT = 8766
-    REORG_LIMIT = 100
-    PEERS = [
-        'rvn4lyfe.com s50002',
-        'aethyn.com t s',
-        'electrum1.rvn.rocks s50002',
-        'electrum2.rvn.rocks s50002',
-        'electrum3.rvn.rocks s50002',
-        'electrum.ravencoin.foundation s50002',
-        'aq7vuqykup2voklcrpqljf6jnjkzrouowsjfrmybdou5kdhrpr6sjjid.onion t s'
-    ]
+    BASIC_HEADER_SIZE = 120
 
-    @classmethod
-    def static_header_offset(cls, height):
-        '''Given a header height return its offset in the headers file.'''
-        if cls.KAWPOW_ACTIVATION_HEIGHT < 0 or height < cls.KAWPOW_ACTIVATION_HEIGHT:
-            result = height * cls.BASIC_HEADER_SIZE
-        else:  # RVN block header size increased with kawpow fork
-            baseoffset = cls.KAWPOW_ACTIVATION_HEIGHT * cls.BASIC_HEADER_SIZE
-            result = baseoffset + ((height - cls.KAWPOW_ACTIVATION_HEIGHT) * cls.KAWPOW_HEADER_SIZE)
-        return result
+    CHAIN_SIZE = 0
+    CHAIN_SIZE_HEIGHT = 0
+    AVG_BLOCK_SIZE = 294
+    
+    RPC_PORT = 8819
+    REORG_LIMIT = 60
+    PEERS = [
+    ]
 
     @classmethod
     def header_hash(cls, header):
@@ -267,25 +248,18 @@ class Ravencoin(Coin):
             b.reverse()
             return bytes(b)
 
-        if timestamp >= cls.KAWPOW_ACTIVATION_TIME:
-            import kawpow
-            nNonce64 = util.unpack_le_uint64_from(header, 80)[0]  # uint64_t
-            mix_hash = reverse_bytes(header[88:120])  # uint256
+        # TODO: Import evrhash
+        import kawpow
+        nNonce64 = util.unpack_le_uint64_from(header, 80)[0]  # uint64_t
+        mix_hash = reverse_bytes(header[88:120])  # uint256
 
-            header_hash = reverse_bytes(double_sha256(header[:80]))
+        header_hash = reverse_bytes(double_sha256(header[:80]))
 
-            final_hash = reverse_bytes(kawpow.light_verify(header_hash, mix_hash, nNonce64))
-            return final_hash
-
-        elif timestamp >= cls.X16RV2_ACTIVATION_TIME:
-            import x16rv2_hash
-            return x16rv2_hash.getPoWHash(header)
-        else:
-            import x16r_hash
-            return x16r_hash.getPoWHash(header)
+        final_hash = reverse_bytes(kawpow.light_verify(header_hash, mix_hash, nNonce64))
+        return final_hash
 
 
-class RavencoinTestnet(Ravencoin):
+class EvrmoreTestnet(Evrmore):
     NET = "testnet"
     XPUB_VERBYTES = bytes.fromhex("043587CF")
     XPRV_VERBYTES = bytes.fromhex("04358394")
@@ -294,19 +268,12 @@ class RavencoinTestnet(Ravencoin):
     WIF_BYTE = bytes.fromhex("EF")
     GENESIS_HASH = ('000000ecfc5e6324a079542221d00e10'
                     '362bdc894d56500c414060eea8a3ad5a')
-    X16RV2_ACTIVATION_TIME = 1567533600
-    KAWPOW_ACTIVATION_HEIGHT = 231544
-    KAWPOW_ACTIVATION_TIME = 1585159200
     
-    CHAIN_SIZE = 490_321_308
-    CHAIN_SIZE_HEIGHT = 1_048_377
+    CHAIN_SIZE = 0
+    CHAIN_SIZE_HEIGHT = 0
     AVG_BLOCK_SIZE = 294
 
-    RPC_PORT = 18766
-    PEER_DEFAULT_PORTS = {'t': '50003', 's': '50004'}
-    REORG_LIMIT = 100
+    RPC_PORT = 18819
+    REORG_LIMIT = 60
     PEERS = [
-        "testnet.rvn.rocks s50002",
-        "electrum.ravencoin.foundation s50012",
-        "rvn4lyfe.com s50003"
     ]
