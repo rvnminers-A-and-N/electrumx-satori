@@ -1,22 +1,22 @@
 ===============================================
-Ravencoin ElectrumX - A fork of ElectrumX
+Evrmore ElectrumX - A fork of ElectrumX
 ===============================================
-
-For a future network with bigger blocks.
 
   :Licence: MIT
   :Language: Python (>= 3.8)
   :Author: Neil Booth
-  :Ravencoin Conversion: kralverde#0550 
+  :Evrmore Conversion: kralverde#0550 
 
 Documentation
 =============
 
 Requires :code:`sudo apt-get install python3 python3-pip libleveldb-dev cmake`
 
-If you would like a guide on how to set up an Ravencoin Electrumx server
-for personal use or to add to the wider network, please read
-HyperPeek#9099's document `Setting Up an Ravencoin Electrumx Server <https://github.com/Electrum-RVN-SIG/electrumx-ravencoin/blob/master/ElectrumX%20Ravencoin%20How-To.md/>`_.
+electrux-evrmore is very similar to the Ravencoin ElectrumX server.
+
+A guide on how to set up an Ravencoin Electrumx server for personal use or 
+to add to the wider network is available from HyperPeek#9099 in the
+document `Setting Up an Ravencoin Electrumx Server <https://github.com/Electrum-RVN-SIG/electrumx-ravencoin/blob/master/ElectrumX%20Ravencoin%20How-To.md/>`_.
 
 See `readthedocs <https://electrumx-ravencoin.readthedocs.io/>`_.
 
