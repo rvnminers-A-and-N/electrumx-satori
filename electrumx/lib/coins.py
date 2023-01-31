@@ -245,14 +245,13 @@ class Evrmore(Coin):
             b.reverse()
             return bytes(b)
 
-        # TODO: Fix evrhash name
-        import ethash
+        import evrhash
         nNonce64 = util.unpack_le_uint64_from(header, 80)[0]  # uint64_t
         mix_hash = reverse_bytes(header[88:120])  # uint256
 
         header_hash = reverse_bytes(double_sha256(header[:80]))
 
-        final_hash = reverse_bytes(ethash.light_verify(header_hash, mix_hash, nNonce64))
+        final_hash = reverse_bytes(evrhash.light_verify(header_hash, mix_hash, nNonce64))
         return final_hash
 
 
