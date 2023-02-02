@@ -3,17 +3,18 @@
 
 _______________________
 
-  :Licence: MIT
-  :Language: Python (>= 3.8)
-  :Author: Neil Booth
-  :Evrmore Conversion: kralverde#0550 
+**Licence:** MIT  
+**Language:** Python (>= 3.8)  
+**Author:** Neil Booth  
+**RVN/EVR Conversion:** kralverde#0550  
+**Evrmore Support:** Hans_Schmidt#0745
 
 ## Documentation
 
 
 Requires 
 ```
-sudo apt-get install python3 python3-pip libleveldb-dev cmake
+    sudo apt-get install python3 python3-pip libleveldb-dev cmake
 ```
 
 electrux-evrmore is very similar to the Ravencoin ElectrumX server.
