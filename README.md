@@ -93,6 +93,16 @@ First install virtualenv:
     pip3 install virtualenv
 ```
 
+Add the following line to ~/.bashrc:
+```
+	PATH=$PATH:/home/ubuntu2/.local/bin
+```
+
+And activate it:
+```
+	. ~/.bashrc
+```
+
 Now starting from the home directory, create the virtualenv:
 ```
     cd ~
@@ -103,7 +113,6 @@ And activate the virtualenv:
 ```
     source python_for_electrumx/bin/activate
 ```
-
 
 Now get the code for evrhash, build and install it:
 ```
@@ -158,7 +167,7 @@ systemctl to launch ElectrumX. It should contain:
 
 	[Service]
 	EnvironmentFile=/etc/electrumx.conf
-	Environment="PATH=/home/ubuntu2/ptyhon_4_electrumx/bin:$PATH"
+	Environment="PATH=/home/ubuntu2/python_for_electrumx/bin:$PATH"
 	ExecStart=/home/ubuntu2/electrumx-evrmore/electrumx_server
 	User=ubuntu2
 	LimitNOFILE=8192
@@ -182,16 +191,6 @@ Install the rest of the dependencies of ElectrumX. Note again that they will be 
 in the virtualenv version of python:
 ```
 	python3 -m pip install -r requirements.txt
-```
-
-Add the following line to ~/.bashrc:
-```
-	PATH=$PATH:/home/ubuntu2/.local/bin
-```
-
-And activate it:
-```
-	. ~/.bashrc
 ```
 
 Next create ElectrumX's working directories and certificates:
@@ -219,5 +218,5 @@ To monitor ElectrumX:
 
 To stop ElectrumX:
 ```
-	systemctl stop electrumx
+	sudo systemctl stop electrumx
 ```
