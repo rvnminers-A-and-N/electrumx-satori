@@ -179,7 +179,7 @@ systemctl to launch ElectrumX. It should contain:
 
 Note the new line which was added to make sure that the virtualenv version of python is used:
 ```
-	Environment="PATH=/home/ubuntu2/ptyhon_4_electrumx/bin:$PATH"
+	Environment="PATH=/home/ubuntu2/python_for_electrumx/bin:$PATH"
 ```
 
 Now copy the file:
