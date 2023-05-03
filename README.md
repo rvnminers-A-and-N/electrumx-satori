@@ -140,9 +140,10 @@ for ElectrumX. It should contain (adjust the home directory):
 ```
 	DB_DIRECTORY=/home/ubuntu2/electrumx-evrmore/electrumx_db
 	DAEMON_URL=http://yourname:yourpassword@127.0.0.1/
+	AIRDROP_CSV_FILE = /home/ubuntu2/electrumx-evrmore/electrumx/airdropindexes.csv
 	COIN=Evrmore
 	NET=mainnet
-	SERVICES=tcp://:50001,ssl://:50002
+	SERVICES=tcp://:50001,ssl://:50002,rpc://localhost:8000
 	SSL_CERTFILE=/home/ubuntu2/electrumx-evrmore/ssl_cert/server.crt
 	SSL_KEYFILE=/home/ubuntu2/electrumx-evrmore/ssl_cert/server.key
 	COST_SOFT_LIMIT=100000
@@ -150,6 +151,7 @@ for ElectrumX. It should contain (adjust the home directory):
 	BANDWIDTH_UNIT_COST=1000
 	EVENT_LOOP_POLICY=uvloop
 	CACHE_MB=750
+	#LOG_LEVEL=debug
 ```
 
 And copy the file:
@@ -191,16 +193,32 @@ Install the rest of the dependencies of ElectrumX. Note again that they will be 
 in the virtualenv version of python:
 ```
 	python3 -m pip install -r requirements.txt
+	pip3 install websockets
 ```
+Note that the previous line is needed if you want a websocket interface.
 
 Next create ElectrumX's working directories and certificates:
 ```
 	mkdir electrumx_db
 	mkdir ssl_cert
+```
+
+If you will use self-signed certiciates, then do:
+```
 	cd ssl_cert
 	openssl genrsa -out server.key 2048
 	openssl req -new -key server.key -out server.csr
 	openssl x509 -req -days 1825 -in server.csr -signkey server.key -out server.crt
+```
+ELSE if you will be using Let's-Encrypt certificates, then do:
+	**** Adjust the domain name ***
+```	
+	sudo certbot certonly --standalone -d electrum1-mainnet.evrmorecoin.org
+	sudo certbot renew --dry-run
+	ln -s /etc/letsencrypt/live/electrum1-mainnet.evrmorecoin.org/fullchain.pem server.crt
+	ln -s /etc/letsencrypt/live/electrum1-mainnet.evrmorecoin.org/privkey.pem server.key
+	sudo chmod 0755 /etc/letsencrypt/{live,archive}
+	sudo chmod 644 /etc/letsencrypt/archive/electrum2-mainnet.evrmorecoin.org/privkey1.pem
 ```
 
 
