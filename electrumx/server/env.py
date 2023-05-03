@@ -43,6 +43,7 @@ class Env(EnvBase):
 
         self.db_dir = self.required('DB_DIRECTORY')
         self.daemon_url = self.required('DAEMON_URL')
+        self.airdrop_csv_file = self.required('AIRDROP_CSV_FILE')
         if coin is not None:
             assert issubclass(coin, Coin)
             self.coin = coin

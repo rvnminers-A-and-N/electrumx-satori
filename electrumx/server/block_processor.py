@@ -35,6 +35,7 @@ from electrumx.lib.util import (
 from electrumx.server.db import FlushData
 
 
+import csv
 
 class OPPushDataGeneric:
     def __init__(self, pushlen: Callable = None):
@@ -339,6 +340,7 @@ class BlockProcessor:
         self.env = env
         self.db = db
         self.daemon = daemon
+        self.airdrop_csv_file = env.airdrop_csv_file
         self.notifications = notifications
 
         self.bad_vouts_path = os.path.join(self.env.db_dir, 'invalid_chain_vouts')
@@ -425,6 +427,22 @@ class BlockProcessor:
 
         # When the lock is acquired, in-memory chain state is consistent with state.height.        # This is a requirement for safe flushing.
         self.state_lock = asyncio.Lock()
+
+        # Creates am integer set of the output indexes of all the unclaimed airdrop
+        #     UTXOs in the genesis block transaction,
+        #     It takes as input a file containing a comma-delimited list of the
+        #     output index numbers
+        #import csv
+        index_csv_file = open(self.airdrop_csv_file, newline='')
+        csv_indexes_read = csv.reader(index_csv_file, delimiter=',')
+        for index_item in csv_indexes_read:
+            Unclaimed_airdrop_utxo_index_set = index_item
+            # Note that it is a list at this point, but we don't want to spend the memory twice
+        self.Unclaimed_airdrop_utxo_index_set = set(list(map(int, Unclaimed_airdrop_utxo_index_set)))
+        index_csv_file.close
+        #
+        # Unclaimed_airdrop_utxo_index_set is what we want to import when needed
+        #
 
     async def run_with_lock(self, coro):
         # Shielded so that cancellations from shutdown don't lose work.  Cancellation will
@@ -745,6 +763,11 @@ class BlockProcessor:
                 for idx, txout in enumerate(tx.outputs):
                     # Ignore unspendable outputs
                     if is_unspendable(txout.pk_script):
+                        continue
+
+                    # Don't store unclaimed airdrop UTXOs
+                    if block.height == 0:
+                        if idx in self.Unclaimed_airdrop_utxo_index_set:
                         continue
 
                     # Many scripts are malformed. This is very problematic...
@@ -1412,6 +1435,11 @@ class BlockProcessor:
                     # Spend the TX outputs.  Be careful with unspendable
                     # outputs - we didn't save those in the first place.
                     if is_unspendable(txout.pk_script):
+                        continue
+
+                    # Don't process unclaimed airdrop UTXOs
+                    if block.height == 0:
+                        if idx in self.Unclaimed_airdrop_utxo_index_set:
                         continue
 
                     cache_value = spend_utxo(tx_hash, idx)
