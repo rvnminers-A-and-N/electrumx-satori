@@ -1,12 +1,13 @@
 [Unit]
-Description=Electrumx
+Description=Electrumx-Evrmore
 After=network.target network-online.target
 Wants=network-online.target
 
 [Service]
-EnvironmentFile=/etc/electrumx.conf
-ExecStart=/home/electrumx/electrumx/electrumx_server
-User=electrumx
+EnvironmentFile=/etc/electrumx-evrmore.conf
+Environment="PATH=/home/myid/python_for_electrumx-evrmore/bin:$PATH"
+ExecStart=/home/myid/electrumx-evrmore/electrumx_server
+User=myid
 LimitNOFILE=8192
 TimeoutStopSec=30min
 
