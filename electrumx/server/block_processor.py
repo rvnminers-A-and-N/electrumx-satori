@@ -768,7 +768,7 @@ class BlockProcessor:
                     # Don't store unclaimed airdrop UTXOs
                     if block.height == 0:
                         if idx in self.Unclaimed_airdrop_utxo_index_set:
-                        continue
+                        	continue
 
                     # Many scripts are malformed. This is very problematic...
                     # We cannot assume scripts are valid just because they are from a node
@@ -1440,7 +1440,7 @@ class BlockProcessor:
                     # Don't process unclaimed airdrop UTXOs
                     if block.height == 0:
                         if idx in self.Unclaimed_airdrop_utxo_index_set:
-                        continue
+                        	continue
 
                     cache_value = spend_utxo(tx_hash, idx)
 
