@@ -7,17 +7,15 @@ version = electrumx.version.rsplit(' ', maxsplit=1)[-1]
 with open('requirements.txt', 'r') as f:
     requirements = f.read().splitlines()
 
-#requirements = [i for i in requirements if "kawpow" not in i]
-
 setuptools.setup(
-    name='electrumX',
+    name='electrumX-ravencoin',
     version=version,
     scripts=['electrumx_server', 'electrumx_rpc', 'electrumx_compact_history'],
     python_requires='>=3.8',
     install_requires=requirements,
     extras_require={
         'rocksdb': ['python-rocksdb>=0.6.9'],
-        'uvloop': ['uvloop>=0.14'],
+        'uvloop': ['uvloop>=0.17'],
     },
     packages=setuptools.find_packages(include=('electrumx*',)),
     description='ElectrumX Server',
@@ -33,7 +31,7 @@ setuptools.setup(
         'Framework :: AsyncIO',
         'License :: OSI Approved :: MIT License',
         'Operating System :: Unix',
-        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Topic :: Database",
         'Topic :: Internet',
     ],
