@@ -15,6 +15,8 @@ _______________________
 Requires 
 ```
     sudo apt-get install python3 python3-pip libleveldb-dev cmake
+
+	and an installation of `https://github.com/EvrmoreOrg/cpp-evrprogpow`
 ```
 
 electrux-evrmore is very similar to the Ravencoin ElectrumX server.
@@ -95,7 +97,7 @@ First install virtualenv:
 
 Add the following line to ~/.bashrc:
 ```
-	PATH=$PATH:/home/ubuntu2/.local/bin
+	PATH=$PATH:/home/myid/.local/bin
 ```
 
 And activate it:
@@ -124,7 +126,7 @@ Now get the code for evrhash, build and install it:
 
 That last command built evrhash and installed it into the virtualenv at directory : 
 ```
-    /home/ubuntu2/python_for_electrumx/lib/python3.8/site-packages/evrhash-0.5.1a1-py3.8-linux-x86_64.egg
+    /home/myid/python_for_electrumx/lib/python3.8/site-packages/evrhash-0.5.1a1-py3.8-linux-x86_64.egg
 ```
 
 
@@ -138,14 +140,14 @@ Next get the Electrumx-Evrmore code:
 Edit the "~/electrumx-evrmore/contrib/systemd/electrumx.conf" file which contains the ENV variables
 for ElectrumX. It should contain (adjust the home directory):
 ```
-	DB_DIRECTORY=/home/ubuntu2/electrumx-evrmore/electrumx_db
+	DB_DIRECTORY=/home/myid/electrumx-evrmore/electrumx_db
 	DAEMON_URL=http://yourname:yourpassword@127.0.0.1/
-	AIRDROP_CSV_FILE = /home/ubuntu2/electrumx-evrmore/electrumx/airdropindexes.csv
+	AIRDROP_CSV_FILE = /home/myid/electrumx-evrmore/electrumx/airdropindexes.csv
 	COIN=Evrmore
 	NET=mainnet
-	SERVICES=tcp://:50001,ssl://:50002,rpc://localhost:8000
-	SSL_CERTFILE=/home/ubuntu2/electrumx-evrmore/ssl_cert/server.crt
-	SSL_KEYFILE=/home/ubuntu2/electrumx-evrmore/ssl_cert/server.key
+	SERVICES=tcp://:50001,ssl://:50002,wss://:50004,rpc://localhost:8000
+	SSL_CERTFILE=/home/myid/electrumx-evrmore/ssl_cert/server.crt
+	SSL_KEYFILE=/home/myid/electrumx-evrmore/ssl_cert/server.key
 	COST_SOFT_LIMIT=100000
 	COST_HARD_LIMIT=300000
 	BANDWIDTH_UNIT_COST=1000
@@ -156,7 +158,7 @@ for ElectrumX. It should contain (adjust the home directory):
 
 And copy the file:
 ```
-	sudo cp ./contrib/systemd/electrumx.conf /etc/
+	sudo cp ./contrib/systemd/electrumx.conf /etc/electrumx-evrmore.conf
 ```
 
 Edit the "~/electrumx-evrmore/contrib/systemd/electrumx.service" file which will be used by
@@ -168,10 +170,10 @@ systemctl to launch ElectrumX. It should contain:
 	Wants=network-online.target
 
 	[Service]
-	EnvironmentFile=/etc/electrumx.conf
-	Environment="PATH=/home/ubuntu2/python_for_electrumx/bin:$PATH"
-	ExecStart=/home/ubuntu2/electrumx-evrmore/electrumx_server
-	User=ubuntu2
+	EnvironmentFile=/etc/electrumx-evrmore.conf
+	Environment="PATH=/home/myid/python_for_electrumx/bin:$PATH"
+	ExecStart=/home/myid/electrumx-evrmore/electrumx_server
+	User=myid
 	LimitNOFILE=8192
 	TimeoutStopSec=30min
 
@@ -181,7 +183,7 @@ systemctl to launch ElectrumX. It should contain:
 
 Note the new line which was added to make sure that the virtualenv version of python is used:
 ```
-	Environment="PATH=/home/ubuntu2/python_for_electrumx/bin:$PATH"
+	Environment="PATH=/home/myid/python_for_electrumx/bin:$PATH"
 ```
 
 Now copy the file:
@@ -213,6 +215,7 @@ If you will use self-signed certiciates, then do:
 ELSE if you will be using Let's-Encrypt certificates, then do:
 	**** Adjust the domain name ***
 ```	
+	sudo apt install certbot
 	sudo certbot certonly --standalone -d electrum1-mainnet.evrmorecoin.org
 	sudo certbot renew --dry-run
 	ln -s /etc/letsencrypt/live/electrum1-mainnet.evrmorecoin.org/fullchain.pem server.crt
