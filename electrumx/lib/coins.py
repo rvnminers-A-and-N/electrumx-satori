@@ -45,6 +45,12 @@ from electrumx.server.session import ElectrumX
 
 Block = namedtuple("Block", "raw header transactions")
 
+try:
+    import evrhash
+except ImportError:
+    import sys
+    print('evrhash must be installed from https://github.com/EvrmoreOrg/cpp-evrprogpow', file=sys.stderr)
+    sys.exit(1)
 
 class CoinError(Exception):
     '''Exception raised for coin-related errors.'''
@@ -76,6 +82,9 @@ class Coin:
 
     ESTIMATEFEE_MODES = (None, 'CONSERVATIVE', 'ECONOMICAL')
 
+    def __new__(cls):
+        assert cls.KAWPOW_ACTIVATION_TIME > 0
+
     @classmethod
     def bucket_estimatefee_block_target(cls, n: int) -> int:
         # values based on https://github.com/bitcoin/bitcoin/blob/af05bd9e1e362c3148e3b434b7fac96a9a5155a1/src/policy/fees.h#L131  # noqa
@@ -93,9 +102,7 @@ class Coin:
 
     @classmethod
     def prefetch_limit(cls, height):
-        if height <= 650_000:
-            return 100
-        return 10
+        return 100
 
     @classmethod
     def static_header_offset(cls, height):
@@ -234,6 +241,8 @@ class Evrmore(Coin):
     RPC_PORT = 8819
     REORG_LIMIT = 60
     PEERS = [
+        'electrum1-mainnet.evrmorecoin.org s t',
+        'electrum2-mainnet.evrmorecoin.org s t',
     ]
 
     @classmethod
@@ -245,7 +254,6 @@ class Evrmore(Coin):
             b.reverse()
             return bytes(b)
 
-        import evrhash
         nNonce64 = util.unpack_le_uint64_from(header, 80)[0]  # uint64_t
         mix_hash = reverse_bytes(header[88:120])  # uint256
 
@@ -272,6 +280,8 @@ class EvrmoreTestnet(Evrmore):
     RPC_PORT = 18819
     REORG_LIMIT = 60
     PEERS = [
+        'electrum1-testnet.evrmorecoin.org s t',
+        'electrum2-testnet.evrmorecoin.org s t',
     ]
 
     @classmethod
