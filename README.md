@@ -216,12 +216,13 @@ ELSE if you will be using Let's-Encrypt certificates, then do:
 	**** Adjust the domain name ***
 ```	
 	sudo apt install certbot
-	sudo certbot certonly --standalone -d electrum1-mainnet.evrmorecoin.org
+	cd ssl_cert	
+	sudo certbot certonly --standalone -d my_domain_name
 	sudo certbot renew --dry-run
-	ln -s /etc/letsencrypt/live/electrum1-mainnet.evrmorecoin.org/fullchain.pem server.crt
-	ln -s /etc/letsencrypt/live/electrum1-mainnet.evrmorecoin.org/privkey.pem server.key
+	ln -s /etc/letsencrypt/live/my_domain_name/fullchain.pem server.crt
+	ln -s /etc/letsencrypt/live/my_domain_name/privkey.pem server.key
 	sudo chmod 0755 /etc/letsencrypt/{live,archive}
-	sudo chmod 644 /etc/letsencrypt/archive/electrum2-mainnet.evrmorecoin.org/privkey1.pem
+	sudo chmod 644 /etc/letsencrypt/archive/my_domain_name/privkey1.pem
 ```
 
 
