@@ -145,6 +145,7 @@ for ElectrumX. It should contain (adjust the home directory):
 	AIRDROP_CSV_FILE = /home/myid/electrumx-evrmore/electrumx/airdropindexes.csv
 	COIN=Evrmore
 	NET=mainnet
+	# NET=testnet
 	SERVICES=tcp://:50001,ssl://:50002,wss://:50004,rpc://localhost:8000
 	SSL_CERTFILE=/home/myid/electrumx-evrmore/ssl_cert/server.crt
 	SSL_KEYFILE=/home/myid/electrumx-evrmore/ssl_cert/server.key
@@ -225,7 +226,6 @@ ELSE if you will be using Let's-Encrypt certificates, then do:
 	sudo chmod 644 /etc/letsencrypt/archive/my_domain_name/privkey1.pem
 ```
 
-
 ### ElectrumX should be ready to go
 
 To start ElectrumX:
@@ -242,3 +242,5 @@ To stop ElectrumX:
 ```
 	sudo systemctl stop electrumx
 ```
+
+Just a note: Testnet was launched with the same forkdrop/airdrop list as mainnet. Since ElectrumX-Evrmore ignores genesis block UTXOs which were never claimed, I should research which airdrop UTXOs on testnet were never claimed (likely almost all of them), and generate a separate "/home/myid/electrumx-evrmore/electrumx/airdropindexes.csv" file for testnet. I haven't done that, which may create some odd behavior on testnet related to testnet genesis-block UTXOs when using Electrum-Evrmore with testnet. Nothing is actually changed on the testnet chain and a new ElectrumX database can always be generated in the future if desired.
