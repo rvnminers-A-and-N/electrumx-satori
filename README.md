@@ -7,7 +7,7 @@ _______________________
 **Language:** Python (>= 3.8)  
 **Author:** Neil Booth  
 **RVN/EVR Conversion:** kralverde#0550  
-**Evrmore Support:** Hans_Schmidt#0745
+**Evrmore Support:** Hans_Schmidt#0745  
 **Satori Support:** psychedelicspectrum01#8606
 
 ## Documentation
