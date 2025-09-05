@@ -3,4 +3,4 @@ pylru
 plyvel
 uvloop
 aiorpcx[ws]>=0.22,<0.23
-kawpow==0.9.4.4
+kawpow
