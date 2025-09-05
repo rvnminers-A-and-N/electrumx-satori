@@ -1,5 +1,5 @@
 
-# Evrmore ElectrumX - A fork of ElectrumX
+# Satori ElectrumX - A fork of ElectrumX
 
 _______________________
 
@@ -8,6 +8,7 @@ _______________________
 **Author:** Neil Booth  
 **RVN/EVR Conversion:** kralverde#0550  
 **Evrmore Support:** Hans_Schmidt#0745
+**Satori Support:** psychedelicspectrum01#8606
 
 ## Documentation
 
@@ -16,12 +17,12 @@ Requires
 ```
     sudo apt-get install python3 python3-pip libleveldb-dev cmake
 
-	and an installation of `https://github.com/EvrmoreOrg/cpp-evrprogpow`
+	and an installation of `https://github.com/RavenCommunity/cpp-kawpow`
 ```
 
-electrux-evrmore is very similar to the Ravencoin ElectrumX server.
+electrux-satori is very similar to the Ravencoin/Evrmore ElectrumX servers.
 
-A guide on how to set up an Ravencoin Electrumx server for personal use or 
+A guide on how to set up a Ravencoin Electrumx server for personal use or 
 to add to the wider network is available from HyperPeek#9099 in the
 document 
 [Setting Up an Ravencoin Electrumx Server](https://github.com/Electrum-RVN-SIG/electrumx-ravencoin/blob/master/ElectrumX%20Ravencoin%20How-To.md)
@@ -44,9 +45,9 @@ and
 [https://electrumx-ravencoin.readthedocs.io/en/latest/environment.html](https://electrumx-ravencoin.readthedocs.io/en/latest/environment.html)
 
 
-First make sure that you have a fully-syncd Evrmore evrmored/evrmore-qt node with access to RPC
+First make sure that you have a fully-syncd Satori satorid/satori-qt node with access to RPC
 
-The evrmore.conf file must have "rest=1" or electrumx will not be able to connect.
+The satori.conf file must have "rest=1" or electrumx will not be able to connect.
 A good example to follow is:
 ```
     server=1
@@ -69,7 +70,7 @@ A good example to follow is:
     rest=1
 ```
 
-Note that electrumx generates LOTS of network traffic with clients (up to 1TB/day). But electrumx does not need much CPU (it's single threaded python), memory, or storage compared to evrmored/evrmore-qt. 
+Note that electrumx generates LOTS of network traffic with clients (up to 1TB/day). But electrumx does not need much CPU (it's single threaded python), memory, or storage compared to satorid/satori-qt. 
 
 
 Make sure Python 3.8.5 or higher is installed by typing:
@@ -88,7 +89,7 @@ If the supported Python version is high enough, proceed with:
 ```
 
 
-Note that ElectrumX-Evrmore requires the "evrhash" module, which is not yet available on PyPi, so it needs to be built and loadeed locally. To avoid modifying the system-wide python "site-packages", a virtualenv can be used to more closely control the installation.
+Note that ElectrumX-Satori does NOT require the "evrhash" module, which is not yet available on PyPi, we switched back to Kawpow, so it does not need to be built and loadeed locally until we move to a new hash beyond everhash. To avoid modifying the system-wide python "site-packages", a virtualenv can be used to more closely control the installation at that point in time.
 
 First install virtualenv:
 ```
@@ -119,36 +120,36 @@ And activate the virtualenv:
 Now get the code for evrhash, build and install it:
 ```
 	cd ~
-	git clone https://github.com/EvrmoreOrg/cpp-evrprogpow.git evrhash
-	cd ~/evrhash
+	git clone https://github.com/RavenCommunity/cpp-kawpow.git kawpow
+	cd ~/kawpow
 	python setup.py install
 ```
 
-That last command built evrhash and installed it into the virtualenv at directory : 
+That last command built kawpow and installed it into the virtualenv at directory (not 100% sure, will update) : 
 ```
-    /home/myid/python_for_electrumx/lib/python3.8/site-packages/evrhash-0.5.1a1-py3.8-linux-x86_64.egg
+    /home/myid/python_for_electrumx/lib/python3.8/site-packages/kawpow-0.9.4.4-py3.8-linux-x86_64.egg
 ```
 
 
-Next get the Electrumx-Evrmore code:
+Next get the Electrumx-Satori code:
 ```
 	cd ~
-	git clone https://github.com/EvrmoreOrg/electrumx-evrmore
-	cd electrumx-evrmore
+	git clone https://github.com/SatoriNetwork/electrumx-satori
+	cd electrumx-satori
 ```
 
-Edit the "~/electrumx-evrmore/contrib/systemd/electrumx.conf" file which contains the ENV variables
+Edit the "~/electrumx-satori/contrib/systemd/electrumx.conf" file which contains the ENV variables
 for ElectrumX. It should contain (adjust the home directory):
 ```
-	DB_DIRECTORY=/home/myid/electrumx-evrmore/electrumx_db
+	DB_DIRECTORY=/home/myid/electrumx-satori/electrumx_db
 	DAEMON_URL=http://yourname:yourpassword@127.0.0.1/
-	AIRDROP_CSV_FILE = /home/myid/electrumx-evrmore/electrumx/airdropindexes.csv
-	COIN=Evrmore
+	AIRDROP_CSV_FILE = /home/myid/electrumx-satori/electrumx/airdropindexes.csv
+	COIN=Satori
 	NET=mainnet
 	# NET=testnet
 	SERVICES=tcp://:50001,ssl://:50002,wss://:50004,rpc://localhost:8000
-	SSL_CERTFILE=/home/myid/electrumx-evrmore/ssl_cert/server.crt
-	SSL_KEYFILE=/home/myid/electrumx-evrmore/ssl_cert/server.key
+	SSL_CERTFILE=/home/myid/electrumx-satori/ssl_cert/server.crt
+	SSL_KEYFILE=/home/myid/electrumx-satori/ssl_cert/server.key
 	COST_SOFT_LIMIT=100000
 	COST_HARD_LIMIT=300000
 	BANDWIDTH_UNIT_COST=1000
@@ -159,21 +160,21 @@ for ElectrumX. It should contain (adjust the home directory):
 
 And copy the file:
 ```
-	sudo cp ./contrib/systemd/electrumx.conf /etc/electrumx-evrmore.conf
+	sudo cp ./contrib/systemd/electrumx.conf /etc/electrumx-satori.conf
 ```
 
-Edit the "~/electrumx-evrmore/contrib/systemd/electrumx.service" file which will be used by
+Edit the "~/electrumx-satori/contrib/systemd/electrumx.service" file which will be used by
 systemctl to launch ElectrumX. It should contain:
 ```
 	[Unit]
-	Description=Electrumx-Evrmore
+	Description=Electrumx-Satori
 	After=network.target network-online.target
 	Wants=network-online.target
 
 	[Service]
-	EnvironmentFile=/etc/electrumx-evrmore.conf
+	EnvironmentFile=/etc/electrumx-satori.conf
 	Environment="PATH=/home/myid/python_for_electrumx/bin:$PATH"
-	ExecStart=/home/myid/electrumx-evrmore/electrumx_server
+	ExecStart=/home/myid/electrumx-satori/electrumx_server
 	User=myid
 	LimitNOFILE=8192
 	TimeoutStopSec=30min
@@ -243,4 +244,4 @@ To stop ElectrumX:
 	sudo systemctl stop electrumx
 ```
 
-Just a note: Testnet was launched with the same forkdrop/airdrop list as mainnet. Since ElectrumX-Evrmore ignores genesis block UTXOs which were never claimed, I should research which airdrop UTXOs on testnet were never claimed (likely almost all of them), and generate a separate "/home/myid/electrumx-evrmore/electrumx/airdropindexes.csv" file for testnet. I haven't done that, which may create some odd behavior on testnet related to testnet genesis-block UTXOs when using Electrum-Evrmore with testnet. Nothing is actually changed on the testnet chain and a new ElectrumX database can always be generated in the future if desired.
+Just a note: Testnet was launched with the same forkdrop/airdrop list as mainnet. Since ElectrumX-Satori ignores genesis block UTXOs which were never claimed, I should research which airdrop UTXOs on testnet were never claimed (likely almost all of them), and generate a separate "/home/myid/electrumx-satori/electrumx/airdropindexes.csv" file for testnet. I haven't done that, which may create some odd behavior on testnet related to testnet genesis-block UTXOs when using Electrum-Satori with testnet. Nothing is actually changed on the testnet chain and a new ElectrumX database can always be generated in the future if desired.
