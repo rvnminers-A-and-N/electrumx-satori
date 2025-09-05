@@ -14,6 +14,7 @@
    increase the timeout (in seconds) further.
 
 Version 1.11.0 RVN (20 JUN 2023)
+============================
 
 * Added subscriptions to various asset events
 
