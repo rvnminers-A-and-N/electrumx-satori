@@ -1,11 +1,11 @@
 [Unit]
-Description=Electrumx-Evrmore
+Description=Electrumx-Satori
 After=network.target network-online.target
 Wants=network-online.target
 
 [Service]
-EnvironmentFile=/etc/electrumx-evrmore.conf
-Environment="PATH=/home/myid/python_for_electrumx-evrmore/bin:$PATH"
+EnvironmentFile=/etc/electrumx-satori.conf
+Environment="PATH=/home/myid/python_for_electrumx-satori/bin:$PATH"
 ExecStart=/home/myid/electrumx-evrmore/electrumx_server
 User=myid
 LimitNOFILE=8192
