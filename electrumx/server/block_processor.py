@@ -998,8 +998,8 @@ class BlockProcessor:
                     def try_parse_asset(asset_deserializer: DataParser, second_loop=False):
                         nonlocal current_restricted_asset, restricted_idx
                         op = asset_deserializer.read_bytes(3)
-                        if op != b'evr':
-                            raise Exception("Expected {}, was {}".format(b'evr', op))
+                        if op != b'sat':
+                            raise Exception("Expected {}, was {}".format(b'sat', op))
                         script_type = asset_deserializer.read_byte()
                         asset_name_len, asset_name = asset_deserializer.read_var_bytes_tuple_bytes()
                         idx_b = to_le_uint32(idx)
@@ -1164,13 +1164,16 @@ class BlockProcessor:
 
                     # function for malformed asset
                     def try_parse_asset_iterative(script: bytes):
-                        while script[:3] != b'evr' and len(script) > 0:
+                        while script[:3] != b'sat' and len(script) > 0:
                             script = script[1:]
-                        assert script[:3] == b'evr'
+                        assert script[:3] == b'sat'
                         return try_parse_asset(DataParser(script), True)
 
                     # Me @ core devs
                     # https://www.youtube.com/watch?v=iZlpsneDGBQ
+
+                    # Me (a core dev) @ dude above
+                    # https://www.youtube.com/watch?v=68-Hcy6MOr4
 
                     if 0 < op_ptr < len(ops):
                         assert ops[op_ptr][0] == OpCodes.OP_ASSET  # Sanity check
