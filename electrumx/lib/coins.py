@@ -46,10 +46,10 @@ from electrumx.server.session import ElectrumX
 Block = namedtuple("Block", "raw header transactions")
 
 try:
-    import evrhash
+    import kawpow
 except ImportError:
     import sys
-    print('evrhash must be installed from https://github.com/EvrmoreOrg/cpp-evrprogpow', file=sys.stderr)
+    print('kawpow must be installed from https://github.com/RavenCommunity/cpp-kawpow', file=sys.stderr)
     sys.exit(1)
 
 class CoinError(Exception):
@@ -241,8 +241,8 @@ class Satori(Coin):
     RPC_PORT = 8420
     REORG_LIMIT = 60
     PEERS = [
-        #'electrum1-mainnet.satoriassociation.org s t',
-        #'electrum2-mainnet.satoriassociation.org s t',
+        #'electrum1-mainnet.satoricoin.org s t',
+        #'electrum2-mainnet.satoricoin.org s t',
     ]
 
     @classmethod
@@ -259,7 +259,7 @@ class Satori(Coin):
 
         header_hash = reverse_bytes(double_sha256(header[:80]))
 
-        final_hash = reverse_bytes(evrhash.light_verify(header_hash, mix_hash, nNonce64))
+        final_hash = reverse_bytes(kawpow.light_verify(header_hash, mix_hash, nNonce64))
         return final_hash
 
 
@@ -280,8 +280,8 @@ class SatoriTestnet(Satori):
     RPC_PORT = 18420
     REORG_LIMIT = 60
     PEERS = [
-        #'electrum1-testnet.evrmorecoin.org s t',
-        #'electrum2-testnet.evrmorecoin.org s t',
+        #'electrum1-testnet.satoricoin.org s t',
+        #'electrum2-testnet.satoricoin.org s t',
     ]
 
     @classmethod
