@@ -1,4 +1,4 @@
-# example of Dockerfile that builds release of electrumx-ravencoin-1.11.0
+# example of Dockerfile that builds release of electrumx-satori-1.13.0
 # ENV variables can be overrided on the `docker run` command
 
 FROM debian:bookworm-slim
@@ -22,13 +22,13 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN python3 -m pip install --upgrade pip
 
-ARG VERSION=1.12.1
+ARG VERSION=1.13.0
 
-ADD --chown=electrumx https://github.com/EvrmoreOrg/electrumx-evrmore/archive/v${VERSION}.tar.gz .
+ADD --chown=electrumx https://github.com/SatoriNetwork/electrumx-satori/archive/v${VERSION}.tar.gz .
 RUN tar zxvf *.tar.gz
 RUN rm *.tar.gz
 
-WORKDIR /home/electrumx/electrumx-evrmore-${VERSION}
+WORKDIR /home/electrumx/electrumx-satori-${VERSION}
 RUN python3 -m pip install -r requirements.txt
 RUN python3 setup.py install
 WORKDIR /home/electrumx
@@ -36,7 +36,7 @@ WORKDIR /home/electrumx
 RUN rm -r electrumx-evrmore-${VERSION}
 
 ENV SERVICES="ssl://:50002,tcp://:50001,rpc://:8000"
-ENV COIN=Evrmore
+ENV COIN=Satori
 ENV DB_DIRECTORY=/db
 ENV DAEMON_URL="http://username:password@hostname:port/"
 ENV ALLOW_ROOT=true
@@ -72,7 +72,7 @@ CMD if [ -d "$DB_DIRECTORY/ssl_cert/" ]; then \
         openssl x509 -req -days 1825 -in server.csr -signkey server.key -out server.crt; \
     fi && electrumx_server
 
-# build it with eg.: `docker build -t electrumx-evrmore .`
+# build it with eg.: `docker build -t electrumx-satori .`
 # run it with eg.:
-# `docker run -d --net=host -v /home/electrumx/db/:/db -e DAEMON_URL="http://youruser:yourpass@localhost:8766" -e REPORT_SERVICES=tcp://example.com:50001 electrumx-evrmore`
+# `docker run -d --net=host -v /home/electrumx/db/:/db -e DAEMON_URL="http://youruser:yourpass@localhost:8766" -e REPORT_SERVICES=tcp://example.com:50001 electrumx-satori`
 # for a proper clean shutdown, send TERM signal to the running container eg.: `docker kill --signal="TERM" CONTAINER_ID`
