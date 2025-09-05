@@ -221,14 +221,14 @@ class Coin:
         return Decimal(value) / cls.VALUE_PER_COIN
 
 
-class Evrmore(Coin):
-    NAME = "Evrmore"
-    SHORTNAME = "EVR"
+class Satori(Coin):
+    NAME = "Satori"
+    SHORTNAME = "SAT"
     NET = "mainnet"
     XPUB_VERBYTES = bytes.fromhex("0488B21E")
     XPRV_VERBYTES = bytes.fromhex("0488ADE4")
-    P2PKH_VERBYTES = [b'\x33']
-    P2SH_VERBYTES = [b'\x92']
+    P2PKH_VERBYTES = [b'\x63']
+    P2SH_VERBYTES = [b'\x125']
     GENESIS_HASH = ('00'*32)
     DEFAULT_MAX_SEND = 10_000_000
     
@@ -238,11 +238,11 @@ class Evrmore(Coin):
     CHAIN_SIZE_HEIGHT = 0
     AVG_BLOCK_SIZE = 294
     
-    RPC_PORT = 8819
+    RPC_PORT = 8420
     REORG_LIMIT = 60
     PEERS = [
-        'electrum1-mainnet.evrmorecoin.org s t',
-        'electrum2-mainnet.evrmorecoin.org s t',
+        #'electrum1-mainnet.satoriassociation.org s t',
+        #'electrum2-mainnet.satoriassociation.org s t',
     ]
 
     @classmethod
@@ -263,25 +263,25 @@ class Evrmore(Coin):
         return final_hash
 
 
-class EvrmoreTestnet(Evrmore):
+class SatoriTestnet(Satori):
     NET = "testnet"
     XPUB_VERBYTES = bytes.fromhex("043587CF")
     XPRV_VERBYTES = bytes.fromhex("04358394")
-    P2PKH_VERBYTE = bytes.fromhex("6F")
-    P2SH_VERBYTES = [bytes.fromhex("C4")]
+    P2PKH_VERBYTE = bytes.fromhex("41")
+    P2SH_VERBYTES = [bytes.fromhex("7F")]
     WIF_BYTE = bytes.fromhex("EF")
-    GENESIS_HASH = ('0000007b11d0481b2420a7c656ef76775d54ab5b29ee7ea250bc768535693b05')
+    GENESIS_HASH = ('0000009cd13524a0b205646977714262ac05216b3f7ae35ada78d27bc8521292')
     
     CHAIN_SIZE = 0
     CHAIN_SIZE_HEIGHT = 0
     AVG_BLOCK_SIZE = 294
     BASIC_HEADER_SIZE = 80
 
-    RPC_PORT = 18819
+    RPC_PORT = 18420
     REORG_LIMIT = 60
     PEERS = [
-        'electrum1-testnet.evrmorecoin.org s t',
-        'electrum2-testnet.evrmorecoin.org s t',
+        #'electrum1-testnet.evrmorecoin.org s t',
+        #'electrum2-testnet.evrmorecoin.org s t',
     ]
 
     @classmethod
