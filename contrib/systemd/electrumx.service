@@ -6,7 +6,7 @@ Wants=network-online.target
 [Service]
 EnvironmentFile=/etc/electrumx-satori.conf
 Environment="PATH=/home/myid/python_for_electrumx-satori/bin:$PATH"
-ExecStart=/home/myid/electrumx-evrmore/electrumx_server
+ExecStart=/home/myid/electrumx-satori/electrumx_server
 User=myid
 LimitNOFILE=8192
 TimeoutStopSec=30min
