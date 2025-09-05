@@ -7,8 +7,10 @@ version = electrumx.version.rsplit(' ', maxsplit=1)[-1]
 with open('requirements.txt', 'r') as f:
     requirements = f.read().splitlines()
 
+requirements = [i for i in requirements if "kawpow" not in i]
+
 setuptools.setup(
-    name='electrumX-ravencoin',
+    name='electrumX-satori',
     version=version,
     scripts=['electrumx_server', 'electrumx_rpc', 'electrumx_compact_history'],
     python_requires='>=3.8',
@@ -22,9 +24,9 @@ setuptools.setup(
     author='Neil Booth',
     author_email='kyuupichan@gmail.com',
     license='MIT Licence',
-    url='https://github.com/EvrmoreOrg/electrumx-evrmore',
-    long_description='Evrmore server implementation for the Electrum protocol',
-    download_url=('https://github.com/EvrmoreOrg/electrumx-evrmore/archive/'
+    url='https://github.com/SatoriNetwork/electrumx-satori',
+    long_description='Satroi server implementation for the Electrum protocol',
+    download_url=('https://github.com/SatoriNetwork/electrumx-satori/archive/'
                   f'{version}.tar.gz'),
     classifiers=[
         'Development Status :: 5 - Production/Stable',
