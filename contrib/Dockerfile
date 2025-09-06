@@ -33,7 +33,7 @@ RUN python3 -m pip install -r requirements.txt
 RUN python3 setup.py install
 WORKDIR /home/electrumx
 
-RUN rm -r electrumx-evrmore-${VERSION}
+RUN rm -r electrumx-satori-${VERSION}
 
 ENV SERVICES="ssl://:50002,tcp://:50001,rpc://:8000"
 ENV COIN=Satori
